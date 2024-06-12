@@ -1,0 +1,1 @@
+Attempt to create a fully-connected neural network to predict spiral data simply through python and numpy, without traditional ML/NN libraries
