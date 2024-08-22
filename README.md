@@ -1,4 +1,3 @@
-cat <<EOL > README.md
 # Fully Connected Neural Network
 
 This repository implements a fully connected neural network from scratch using only Python and NumPy, without relying on traditional machine learning or neural network libraries.
