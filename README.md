@@ -21,16 +21,16 @@ This repository implements a fully connected neural network from scratch using o
 
 Clone the repository:
 
-\`\`\`bash
+```bash
 git clone https://github.com/schrodingerslemur/fully-connected-nn.git
 cd fully-connected-nn
-\`\`\`
+```
 
 Install the required Python packages:
 
-\`\`\`bash
+```bash
 pip install numpy
-\`\`\`
+```
 
 ### Usage
 
@@ -43,9 +43,9 @@ pip install numpy
 3. **Train the Model:**
    Run the \`train.py\` script to train the model:
 
-   \`\`\`bash
+   ```bash
    python train.py
-   \`\`\`
+   ```
 
 4. **Evaluate the Model:**
    Add evaluation scripts to validate your model's performance.
@@ -54,7 +54,7 @@ pip install numpy
 
 Here’s an example of how to implement and use the classes in this repository:
 
-\`\`\`python
+```python
 import numpy as np
 from network import Layer_Dense
 from loss import Activation_Softmax_Loss_CategoricalCrossentropy
@@ -110,15 +110,14 @@ if __name__ == '__main__':
     print('b1:', b1)
     print('w2:', w2)
     print('b2:', b2)
-\`\`\`
-
+```
 ### File Overview
 
-- \`activation.py\`: Contains activation functions.
-- \`loss.py\`: Defines loss functions.
-- \`network.py\`: Implements the neural network architecture.
-- \`optimizer.py\`: Includes the optimizer logic.
-- \`train.py\`: Script for training the neural network.
+- `activation.py`: Contains activation functions.
+- `loss.py`: Defines loss functions.
+- `network.py`: Implements the neural network architecture.
+- `optimizer.py`: Includes the optimizer logic.
+- `train.py`: Script for training the neural network.
 
 ### Contributing
 
@@ -127,4 +126,3 @@ Feel free to submit issues or pull requests if you have suggestions for improvin
 ### License
 
 This project is licensed under the MIT License.
-EOL
