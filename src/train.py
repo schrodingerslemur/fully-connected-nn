@@ -86,12 +86,14 @@ if __name__ == '__main__':
 
     if '--plot' in sys.argv:
         import os
-        from visualize import plot_training, plot_decision_boundary
+        from visualize import plot_training, plot_decision_boundary, make_gif
         plot_training(loss_history, accuracy_history)
 
         os.makedirs('boundary_frames', exist_ok=True)
+        frame_paths = []
         for epoch, sw1, sb1, sw2, sb2 in weight_snapshots:
-            plot_decision_boundary(X, y, sw1, sb1, sw2, sb2,
+            frame_paths.append(plot_decision_boundary(X, y, sw1, sb1, sw2, sb2,
                                    save_path=f'boundary_frames/epoch_{epoch:05d}.png',
-                                   title=f'Decision Boundary - Epoch {epoch}')
+                                   title=f'Decision Boundary - Epoch {epoch}'))
         print(f'Saved {len(weight_snapshots)} boundary frames in boundary_frames/')
+        make_gif(frame_paths)

@@ -41,3 +41,12 @@ def plot_decision_boundary(X, y, w1, b1, w2, b2, save_path='decision_boundary.pn
     fig.savefig(save_path)
     plt.close(fig)
     return save_path
+
+def make_gif(frame_paths, save_path='decision_boundary.gif', duration=600):
+    from PIL import Image
+
+    frames = [Image.open(path) for path in frame_paths]
+    frames[0].save(save_path, save_all=True, append_images=frames[1:],
+                   duration=duration, loop=0)
+    print(f'Saved gif to {save_path}')
+    return save_path
