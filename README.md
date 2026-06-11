@@ -6,8 +6,8 @@ This repository implements a fully connected neural network from scratch using o
 
 - **Customizable Neural Network Architecture:** Define your own network structure with varying layers and neurons.
 - **Activation Functions:** Includes ReLU and Sigmoid.
-- **Loss Functions:** Implementations of Mean Squared Error (MSE) and Cross-Entropy Loss.
-- **Optimizers:** Gradient Descent with custom learning rates.
+- **Loss Functions:** Implementation of Cross-Entropy Loss.
+- **Optimizers:** SGD (with momentum), Adagrad, RMSprop, and Adam.
 - **Training Script:** Train your model on custom datasets.
 
 ## Getting Started
@@ -16,6 +16,7 @@ This repository implements a fully connected neural network from scratch using o
 
 - Python 3.x
 - NumPy
+- nnfs (used for dataset generation in train.py)
 
 ### Installation
 
@@ -29,7 +30,7 @@ cd fully-connected-nn
 Install the required Python packages:
 
 ```bash
-pip install numpy
+pip install numpy nnfs
 ```
 
 ### Usage
@@ -44,7 +45,7 @@ pip install numpy
    Run the \`train.py\` script to train the model:
 
    ```bash
-   python train.py
+   python src/train.py
    ```
 
 4. **Evaluate the Model:**
@@ -113,11 +114,11 @@ if __name__ == '__main__':
 ```
 ### File Overview
 
-- `activation.py`: Contains activation functions.
-- `loss.py`: Defines loss functions.
-- `network.py`: Implements the neural network architecture.
-- `optimizer.py`: Includes the optimizer logic.
-- `train.py`: Script for training the neural network.
+- `src/activation.py`: Contains activation functions.
+- `src/loss.py`: Defines loss functions.
+- `src/network.py`: Implements the neural network architecture.
+- `src/optimizer.py`: Includes the optimizer logic.
+- `src/train.py`: Script for training the neural network.
 
 ### Contributing
 
