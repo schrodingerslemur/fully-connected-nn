@@ -25,6 +25,10 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
 
     optimizer = Optimizer_Adam(learning_rate=learning_rate, decay=decay)
 
+    # Per-epoch metric history for plotting
+    loss_history = []
+    accuracy_history = []
+
     # Training loop
     for epoch in range(n_epochs):
         # Forward pass
@@ -39,6 +43,9 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
         if len(y.shape) == 2:
             y = np.argmax(y, axis=1)
         accuracy = np.mean(predictions == y)
+
+        loss_history.append(loss)
+        accuracy_history.append(accuracy)
 
         # Print epoch, accuracy and loss
         if not epoch % 100:
@@ -56,12 +63,17 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
         optimizer.update_params(dense2)
         optimizer.post_update_params() 
 
-    return dense1.weights, dense1.biases, dense2.weights, dense2.biases
-    
+    return dense1.weights, dense1.biases, dense2.weights, dense2.biases, loss_history, accuracy_history
+
 if __name__ == '__main__':
     X,y = load_data()
-    w1, b1, w2, b2 = train(X, y, 2, 64, 3) # 3 different classes
+    w1, b1, w2, b2, loss_history, accuracy_history = train(X, y, 2, 64, 3) # 3 different classes
     print('w1:', w1)
     print('b1:', b1)
     print('w2:', w2)
     print('b2:', b2)
+
+    if '--plot' in sys.argv:
+        from visualize import plot_training
+        save_path = plot_training(loss_history, accuracy_history)
+        print(f'Saved training curves to {save_path}')
