@@ -29,6 +29,9 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
     loss_history = []
     accuracy_history = []
 
+    # Weight snapshots for boundary frames, copied because the optimizer updates arrays in place
+    weight_snapshots = []
+
     # ~10 evenly spaced progress lines regardless of n_epochs
     print_every = max(1, n_epochs // 10)
 
@@ -53,6 +56,8 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
         # Print epoch, accuracy and loss
         if epoch % print_every == 0 or epoch == n_epochs - 1:
             print(f'epoch: {epoch}, acc: {(accuracy*100):.2f}%, loss: {loss:.3f}')
+            weight_snapshots.append((epoch, dense1.weights.copy(), dense1.biases.copy(),
+                                     dense2.weights.copy(), dense2.biases.copy()))
             
         # Backward passes
         loss_activation.backward(loss_activation.output, y)
@@ -66,11 +71,11 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
         optimizer.update_params(dense2)
         optimizer.post_update_params() 
 
-    return dense1.weights, dense1.biases, dense2.weights, dense2.biases, loss_history, accuracy_history
+    return dense1.weights, dense1.biases, dense2.weights, dense2.biases, loss_history, accuracy_history, weight_snapshots
 
 if __name__ == '__main__':
     X,y = load_data()
-    w1, b1, w2, b2, loss_history, accuracy_history = train(X, y, 2, 64, 3) # 3 different classes
+    w1, b1, w2, b2, loss_history, accuracy_history, weight_snapshots = train(X, y, 2, 64, 3) # 3 different classes
 
     with open('model.txt', 'w') as f:
         for name, array in (('w1', w1), ('b1', b1), ('w2', w2), ('b2', b2)):
@@ -80,5 +85,13 @@ if __name__ == '__main__':
     print('Saved weights to model.txt')
 
     if '--plot' in sys.argv:
-        from visualize import plot_training
+        import os
+        from visualize import plot_training, plot_decision_boundary
         plot_training(loss_history, accuracy_history)
+
+        os.makedirs('boundary_frames', exist_ok=True)
+        for epoch, sw1, sb1, sw2, sb2 in weight_snapshots:
+            plot_decision_boundary(X, y, sw1, sb1, sw2, sb2,
+                                   save_path=f'boundary_frames/epoch_{epoch:05d}.png',
+                                   title=f'Decision Boundary - Epoch {epoch}')
+        print(f'Saved {len(weight_snapshots)} boundary frames in boundary_frames/')
