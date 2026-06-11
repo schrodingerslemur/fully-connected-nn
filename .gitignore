@@ -1,0 +1,4 @@
+__pycache__/
+model.txt
+training_curves.png
+.venv/

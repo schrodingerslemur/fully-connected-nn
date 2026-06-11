@@ -14,4 +14,6 @@ def plot_training(loss_history, accuracy_history, save_path='training_curves.png
     fig.suptitle('Training Loss and Accuracy')
     fig.savefig(save_path)
     plt.close(fig)
+
+    print(f'Saved training curves to {save_path}')
     return save_path

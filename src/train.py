@@ -15,7 +15,7 @@ def load_data(samples=100, classes=3):
     X, y = spiral_data(samples=samples, classes=classes) # type: ignore
     return X, y
 
-def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, learning_rate=0.05, decay=5e-7):
+def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, learning_rate=0.005, decay=5e-7):
     # Create network, activation, optimizer and loss layers
     dense1 = Layer_Dense(input_neurons, hidden_neurons)
     activation1 = Activation_ReLU()
@@ -28,6 +28,9 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
     # Per-epoch metric history for plotting
     loss_history = []
     accuracy_history = []
+
+    # ~10 evenly spaced progress lines regardless of n_epochs
+    print_every = max(1, n_epochs // 10)
 
     # Training loop
     for epoch in range(n_epochs):
@@ -48,7 +51,7 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
         accuracy_history.append(accuracy)
 
         # Print epoch, accuracy and loss
-        if not epoch % 100:
+        if epoch % print_every == 0 or epoch == n_epochs - 1:
             print(f'epoch: {epoch}, acc: {(accuracy*100):.2f}%, loss: {loss:.3f}')
             
         # Backward passes
@@ -68,12 +71,14 @@ def train(X, y, input_neurons, hidden_neurons, output_neurons, n_epochs=10001, l
 if __name__ == '__main__':
     X,y = load_data()
     w1, b1, w2, b2, loss_history, accuracy_history = train(X, y, 2, 64, 3) # 3 different classes
-    print('w1:', w1)
-    print('b1:', b1)
-    print('w2:', w2)
-    print('b2:', b2)
+
+    with open('model.txt', 'w') as f:
+        for name, array in (('w1', w1), ('b1', b1), ('w2', w2), ('b2', b2)):
+            f.write(f'{name} {array.shape}:\n')
+            f.write(np.array2string(array, precision=4, suppress_small=True, max_line_width=120))
+            f.write('\n\n')
+    print('Saved weights to model.txt')
 
     if '--plot' in sys.argv:
         from visualize import plot_training
-        save_path = plot_training(loss_history, accuracy_history)
-        print(f'Saved training curves to {save_path}')
+        plot_training(loss_history, accuracy_history)
