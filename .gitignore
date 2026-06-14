@@ -1,4 +1,6 @@
 __pycache__/
 model.txt
 training_curves.png
+boundary_frames/
+decision_boundary.gif
 .venv/
